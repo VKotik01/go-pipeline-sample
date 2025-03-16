@@ -45,21 +45,10 @@ pipeline:
                       type: JUnit
                   timeout: ""
                   type: Run
-              - step:
-                  identifier: dockerbuild
-                  name: docker_build
-                  spec:
-                    caching: true
-                    connectorRef: <+input>
-                    repo: hello/world
-                    tags:
-                      - latest
-                  timeout: ""
-                  type: BuildAndPushDockerRegistry
           platform:
+            os: Windows
             arch: Amd64
-            os: Linux
           runtime:
-            spec: {}
             type: Docker
+            spec: {}
         type: CI
