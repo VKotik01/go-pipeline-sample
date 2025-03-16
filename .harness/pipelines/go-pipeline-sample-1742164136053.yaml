@@ -20,17 +20,36 @@ pipeline:
           execution:
             steps:
               - step:
-                  identifier: gobuild
-                  name: go_build
-                  spec:
-                    command: go build
-                  timeout: ""
-                  type: Run
-              - step:
                   identifier: gotestcoverage
                   name: go_test_coverage
                   spec:
-                    command: go test -coverprofile=coverage.out ./...
+                    connectorRef: <+input>
+                    image: golang:1.15
+                    shell: Sh
+                    command: |-
+                      set +e
+                      go get gotest.tools/gotestsum
+                      gotestsum --format=standard-verbose --junitfile unit-tests.xml
+                      exit 0
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - "*.xml"
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: gobuild
+                  name: go_build
+                  spec:
+                    connectorRef: <+input>
+                    image: golang:1.15
+                    shell: Sh
+                    command: |-
+                      set +e
+                      go get gotest.tools/gotestsum
+                      CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo
+                      exit 0
                   timeout: ""
                   type: Run
               - step:
