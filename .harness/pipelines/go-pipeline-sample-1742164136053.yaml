@@ -23,8 +23,6 @@ pipeline:
                   identifier: gotestcoverage
                   name: go_test_coverage
                   spec:
-                    connectorRef: <+input>
-                    image: golang:1.15
                     shell: Sh
                     command: |-
                       set +e
@@ -42,8 +40,6 @@ pipeline:
                   identifier: gobuild
                   name: go_build
                   spec:
-                    connectorRef: <+input>
-                    image: golang:1.15
                     shell: Sh
                     command: |-
                       set +e
